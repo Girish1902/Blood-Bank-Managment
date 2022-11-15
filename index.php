@@ -1,203 +1,137 @@
-<!DOCTYPE HTML>
-<?php
-include('db/db.php');
-include('frontend.php');
+<?php 
+    session_start();
 
-//Database connection selection
-$db=new db();
-$db->db_connect();
-$db->db_select();
-
-$frontend=new frontend();
-
-//lcoation
-$array=$frontend->getlocation();
-  $size=sizeof($array);
-  $t_size=$size;
-  $i=0;
-  $t=0;
-
-/*
-  $today = date('D-d-M,Y');
-  $tomorrow = date('D-d-M,Y', time()+86400);
-  $dayAftT = date('D-d-M,Y', time()+172800);*/
-
-?>
-<html>
-    <head>
-
-    <?php
-    include('metatags/seo.php');
     ?>
-    <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
-    <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
-    <link href="css/style1.css" rel="stylesheet"/>
-    <link href="select2.css" rel="stylesheet"/>
-    <link href="site.css" rel="stylesheet"/>
-    <script src="jquery-1.8.0.min.js"></script>    
-    <script src="http://malsup.github.io/jquery.blockUI.js"></script>
-    <script src="select2.js"></script>
-    <script src="menu.js"></script>
-    <script>
-        $(document).ready(function()
-         {
-            $("#location").select2();   
-        });
-    </script>
+<!DOCTYPE html>
+<html>
+<?php $title="Bloodbank | index page"; ?>
+<?php require 'head.php'; ?>
+<body>
+    <?php require 'header.php'; ?>
 
-    </head>
-    <body>
-     <div class="bar">
-     <nav class="menu">
-     <ul class="active">
-       <li><a href="index.php" class="active">&#x2302; Home</a></li>
-       <li><a href="movies/tekkali" target="_blank">&#9738; Now Playing</a></li>
-       <li><a href="#">&#8673; Upcoming</a></li>
-       <li><a href="#">&#9835; Songs </a></li>
-       <li><a href="#">&#9707; Reviews</a></li>
-       <li><a href="#">&#9707; Trailers</a></li>
-       <!--<li><a href="#">&#9655; More
-       <ul>
-          <li><a href="#">&#9655; Why CinemaChoodu?</a></li>
-       <li><a href="#">&#9655; Careers</a></li>
-       <li><a href="#">&#9655; Contact</a></li>
-       </ul>
-       </li>-->
-       <li>
-        
-       </li>
-      
-     </ul>
-      <!--<script>
-  (function() {
-    var cx = '006821288459539833635:vzl9gvmaomq';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-<gcse:search></gcse:search>-->
-      <a class="toggle-nav" href="#"><img src="menu.png" alt="menu cinemachoodu" Title="Menu"></a>
-      <!-- <form class="search-form">
-        <input type="text">
-        <button>Search</button>-->
-    </form>
-     </nav>
-     </div>
-<CENTER><h1 style="color:#fff;font-size:35px">Discover Best Theaters to Watch Movies Around You</h1></CENTER>
-     <center style="margin-top:17px;">
-      <table>
-        <tr>
-          <td>
-      <center>
-  </center>   
-      </div> 
-          </td>
-           <td style="background:transparent !important">
-<div class="asdf">
-      <center><img src="images/logo2.jpg" title="CinemaChoodu.com Online Movie ticket Booking" alt="CinemaChoodu.com Online Movie ticket Booking" width=286px height=100px></center>
-          <div class='content'>
-  <div class="indexform">
-   <table>
-   <!-- <tr>
-      <td class='itab' id='tabMovie'>Movies</td><td class='itab' id='tabTheater'>Theater</td>
-    </tr>-->
-    <tr>
-      <td style="background:transparent !important;" colspan="2">
-        <div style="padding:15px;border:solid 1px #bdbdbd;margin-top:-4px">
-          <div id="movieform">
-          <form method="POST" action="bookshow.php" name="formone" onsubmit="return vaidateMovie()">
-          <select style="width:100%;" name="location1" id="location1">
-            <option value="">Select Location...</option>
-            <?php                
-              while($size>0)
-              {
-            ?>
-            <option value="<?php echo $array[$i]['id'];?>"><?php echo $array[$i]['name'];?></option>
-            <?php
-              $size--;
-              $i++;
-            }
-            ?>
-          </select><br/><br/>
-          <select style="width:100%" name="selectmovies" id="selectmovies">
-            <option value="">Select Movies...</option>
-          </select><br/><br/>
-          <select style="width:100%" name="mdate" id="mdate">
-            <option value="">Select Date...</option>
-          </select><br/><br/>
-          <input type="submit" id="submit" name='submitone' value="Proceed">
-          </form>
-      
-          </div>
+    <div class="container cont">
 
-         <!-- <div id="theaterform">
-          <form method="POST" action="bookshow.php" name='formtwo' onsubmit="return vaidateTheater()">
-          <select style="width:300px;" name="locationtwo" id="locationtwo">
-            <option value="">Select Location...</option>
-            <?php
-            $sql = "select * from location";
-            $result = mysql_query($sql);
-            while($row = mysql_fetch_array($result))
-            {
-              $id = $row['id'];
-              $lname = $row['location'];
-              echo"<option value='$id'>".$lname."</option>";
-            }
-            ?>
-          </select><br/><br/>
-          <select style="width:300px;" name="selecttheatertwo" id="selecttheatertwo">
-            <option value="">Select Theater...</option>
-          </select><br/><br/>
-          <select style="width:300px;" name="mdatetwo" id="mdatetwo">
-            <option value="">Select Date...</option>
-          </select><br/><br/>
-          <input type="submit" id="submit" name='submittwo' value="Proceed">
-          </form>
-          </div>-->
+   <?php require 'message.php'; ?>
 
+        <div class="row justify-content-center">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-5" style="width: 60%">
+                <div class="card">
+                    <img src="image/bg.png" class="card-img-top">
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+            <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">A+</div>
+                    <div class="card-body">
+                        If you are A+: You can give blood to A+ and AB+. You can receive blood from A+, A-, O+ and O-
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">A-</div>
+                    <div class="card-body">
+                        If you are A-: You can give blood to A-, A+, AB- and AB+. You can receive blood from A- and O-. 
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">B+</div>
+                    <div class="card-body">
+                         You can give blood to A+ and AB+. You can receive blood from A+, A-, O+ and O-.
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">B-</div>
+                    <div class="card-body">
+                        If you are B-: You can give blood to B-, B+, AB+ and AB-, You can receive blood from B- and O-.You can give blood to B+ and AB+.
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">AB+</div>
+                    <div class="card-body">
+                         People with AB+ blood can receive red blood cells from any blood type. This means that demand for AB+ can donate with AB only.
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">AB-</div>
+                    <div class="card-body"> 
+                         AB- patients can receive red blood cells from all negative blood types.
+                         AB- can give red blood cells to both AB- and AB+ blood types.
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">O+</div>
+                    <div class="card-body">
+                        Blood O+ can donate to A+, B+, AB+ and O+ Blood
+                        Group O can donate red blood cells to anybody. It's the universal donor.
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-5">
+                <div class="card">
+                    <div class="card-header text-center">O-</div>
+                    <div class="card-body">
+                        O- can donate to A+, A-, B+, B-, AB+, AB-, O+ and O- Blood
+                        People with O negative blood can only receive red cell donations from O negative donors.
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+            </div>
 
         </div>
-      </td>
-      </tr>
-    </table>
-  </div>
-  </div>
-  <center>
-      <table><tr><td><input type='button' name='printtckt' id='printtckt' value='Print Your Ticket'>&nbsp;&nbsp;</td>
-        <td><input type='button' name='sendid' id='sendid' value='SMS Your Ticket'></td>
-      </tr></table>
-    <div id='printform' style='display:none;'>
-      <span id='close'>X</span>
-      Print Ticket
-      <form method='post' action='printyourticket'>
-      <input type='text' name='mobile' id='mobile' placeholder='Enter Mobile No' /><br/>
-      <input type='text' name='bookid' id='bookid' placeholder='Enter Booking ID' /><br/>
-      <input type='submit' name='printsubmit' id='printsubmit' value='Submit' />
-      </form>
-  </center>   
-      </div> <br/>
-      <h2 style="display:none">Movie ShowTimes, Online Tickets, Movie Reviews, Songs and more...</h2>
-      <h3 style="display:none">Movie ShowTimes, Online Tickets, Movie Reviews, Songs and more...</h3>
-      <div id='printform1' style='display:none;'>
-<!--      <span id='closes'>X</span>-->
-      Coming Soon...
-  </center>   
-      </div> 
-          </td>
-</tr>
-</table><br/>
-</center>    
-  <script src="script.js"></script>
-  <script src="form.js"></script>
-  
-  <?php
-      include('googleanalytics.php');
-  ?>
 
-    </body>
+        <div class="row">
+            <div class="col-lg-6 rounded mb-5">
+
+            </div>
+            <div class="col-lg-6 rounded mb-5">
+                 </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Health tips</div>
+                <div class="card-body">
+                    <dt>Eat a healthy diet</dt>
+                    <dd>Eat a combination of different foods, including fruit, vegetables, legumes, nuts and whole grains. Adults should eat at least five portions (400g) of fruit and vegetables per day. You can improve your intake of fruits and vegetables by always including veggies in your meal; eating fresh fruit and vegetables as snacks; eating a variety of fruits and vegetables; and eating them in season. By eating healthy, you will reduce your risk of malnutrition and noncommunicable diseases (NCDs) such as diabetes, heart disease, stroke and cancer.</dd>
+                    <dt> Consume less salt and sugar</dt>
+                    <dd>On the other hand, consuming excessive amounts of sugars increases the risk of tooth decay and unhealthy weight gain. In both adults and children, the intake of free sugars should be reduced to less than 10% of total energy intake. This is equivalent to 50g or about 12 teaspoons for an adult. WHO recommends consuming less than 5% of total energy intake for additional health benefits. You can reduce your sugar intake by limiting the consumption of sugary snacks, candies and sugar-sweetened beverages.</dd>
+                    <dt>Be active</dt>
+                    <dd>Physical activity is defined as any bodily movement produced by skeletal muscles that requires energy expenditure. This includes exercise and activities undertaken while working, playing, carrying out household chores, travelling, and engaging in recreational pursuits. The amount of physical activity you need depends on your age group but adults aged 18-64 years should do at least 150 minutes of moderate-intensity physical activity throughout the week. Increase moderate-intensity physical activity to 300 minutes per week for additional health benefits.</dd>
+                    <dt>Don’t smoke</dt>
+                    <dd>Smoking tobacco causes NCDs such as lung disease, heart disease and stroke. Tobacco kills not only the direct smokers but even non-smokers through second-hand exposure. Currently, there are around 15.9 million Filipino adults who smoke tobacco but 7 in 10 smokers are interested or plan to quit.
+                    If you are currently a smoker, it’s not too late to quit. Once you do, you will experience immediate and long-term health benefits. If you are not a smoker, that’s great! Do not start smoking and fight for your right to breathe tobacco-smoke-free air.</dd>
+                    <dt>Drink only safe water</dt>
+                    <dt>Get tested</dt>
+                    <dt>Follow traffic laws</dt>
+                    <dt>Talk to someone you trust if you're feeling down</dt>
+                    <dt>Clean your hands properly</dt>
+                    <dt>Have regular check-ups</dt>
+                    Visit here to get more health tips.
+                    <a href="https://www.who.int/philippines/news/feature-stories/detail/20-health-tips-for-2020" target="_blank"> World Health Organisation</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <?php require 'footer.php'; ?>
+
+</body>
 </html>
